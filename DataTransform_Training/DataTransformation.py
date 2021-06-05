@@ -35,8 +35,10 @@ class dataTransform:
                     data = pd.read_csv(self.goodDataPath+"/" + file)
 
                     for column in data.columns:
-                         count = data[column][data[column] == '?'].count()
-                         if count != 0:
+                         if col in column:  # add quotes in string value
+                              data[col] = data[col].apply(lambda x: "'" + str(x) + "'")
+                         if col not in column:  # add quotes to '?' values in integer/float columns
+                              data[col] = data[col].replace('?', "'?'")
 
                     data.to_csv(self.goodDataPath+ "/" + file, index=None, header=True)
                     self.logger.log(log_file," %s: Quotes added successfully!!" % file)
